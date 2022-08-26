@@ -1,21 +1,18 @@
-import { createContext, createElement, useContext, useReducer } from 'react';
+import { createContext, useContext, useReducer } from 'react';
 import reducer from '../reducer/reducer';
-import { v4 as uuidv4 } from 'uuid';
+import mockState from '../../services/mock';
+
 const AppContext = createContext();
 
-
-const initialState = {
-  projectItems: [
-    { id: uuidv4(), name: 'projeto react' },
-    { id: uuidv4(), name: 'projeto flutter' },
-  ],
-  isOpenAddProject: false
-};
-
 const AppProvider = ({ children }) => {
-  const [appState, dispatch] = useReducer(reducer, initialState);
+  const [appState, dispatch] = useReducer(reducer, mockState);
 
-  return <AppContext.Provider value={{appState, dispatch}}>{children}</AppContext.Provider>;
+  
+  return (
+    <AppContext.Provider value={{ appState, dispatch }}>
+      {children}
+    </AppContext.Provider>
+  );
 };
 
 const useGlobalContext = () => {

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import MiniDrawer from './components/MiniDrawer/MiniDrawer';
-import Task from './components/Task/Task';
+import Task from './pages/Task/Task';
 import Home from './pages/Home/Home';
-function App() {
+
+const App = () => {
+ 
   return (
     <Router>
         <Routes>

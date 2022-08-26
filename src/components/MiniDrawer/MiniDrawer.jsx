@@ -30,6 +30,7 @@ import Logo from './../../components/Logo/Logo';
 
 import './GlobalCssDrawer.css';
 
+
 const drawerWidth = 240;
 
 const openedMixin = (theme) => ({
@@ -132,7 +133,7 @@ export default function MiniDrawer({ children }) {
               ...(isMenuOpen && { display: 'none' }),
             }}
           >
-            <ChevronRightIcon style={{ color: '#fff' }} />
+            <ChevronRightIcon sx={{ color: '#fff' }} />
           </IconButton>
           <Box
             sx={{
@@ -223,7 +224,7 @@ export default function MiniDrawer({ children }) {
                     }}
                   >
                     <AccountTreeIcon
-                      style={{ color: '#fff', fontSize: '18px' }}
+                      sx={{ color: '#fff', fontSize: '18px' }}
                     />
                   </ListItemIcon>
                   <ListItemText primary={name} sx={{ opacity: isMenuOpen ? 1 : 0 }} />
