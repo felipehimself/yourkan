@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Task from './pages/Task/Task';
+import Project from './pages/Project/Project';
 import Home from './pages/Home/Home';
 
 const App = () => {
@@ -9,7 +9,7 @@ const App = () => {
     <Router>
         <Routes>
           <Route path='/' element={<Home />}>
-            <Route path='tasks/:id' element={<Task />} />
+            <Route path='tasks/:id' element={<Project />} />
           </Route>
         </Routes>
     </Router>

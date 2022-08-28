@@ -1,13 +1,13 @@
-import MiniDrawer from '../../components/MiniDrawer/MiniDrawer';
+import Drawer from '../../components/Drawer/Drawer';
 import { Outlet } from 'react-router-dom';
 import DeleteProjectModal from '../../components/DeleteProjectModal/DeleteProjectModal';
 
 const Home = () => {
   return (
-    <MiniDrawer>
+    <Drawer>
       <DeleteProjectModal/>
       <Outlet />
-    </MiniDrawer>
+    </Drawer>
   );
 };
 export default Home;

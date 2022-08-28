@@ -5,7 +5,7 @@ import Column from '../../components/Column/Column';
 import { useGlobalContext } from '../../store/context/AppContext';
 import { DragDropContext } from 'react-beautiful-dnd';
 
-const Task = () => {
+const Project = () => {
   const [project, setProject] = useState(null);
   const { id } = useParams();
 
@@ -67,7 +67,7 @@ const Task = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Box sx={{ display: 'flex', gap: 6 }}>
+      <Box sx={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
         {project?.columns.map((column) => {
           return <Column projectId={project.id} key={column.colId} column={column} />;
         })}
@@ -75,4 +75,4 @@ const Task = () => {
     </DragDropContext>
   );
 };
-export default Task;
+export default Project;

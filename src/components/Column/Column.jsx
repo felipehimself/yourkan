@@ -5,7 +5,7 @@ import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 const Column = ({ column, projectId }) => {
   return (
-    <Box sx={{ flex: 1 }}>
+    <Box sx={{ flex: '1 1',  }}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <CircleIcon fontSize='1px' color={column.color} />
         <Typography
