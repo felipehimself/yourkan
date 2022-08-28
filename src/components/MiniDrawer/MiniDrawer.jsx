@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -17,21 +17,23 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  TextField,
 } from '@mui/material';
-import { Button } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { Link as RouterLink, useLocation, useParams } from 'react-router-dom';
 import Link from '@mui/material/Link';
-
+import AddNewTaskBtn from '../AddNewTaskBtn/AddNewTaskBtn';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import { useGlobalContext } from '../../store/context/AppContext';
-
+import TopbarMenu from '../TopbarMenu/TopbarMenu';
 import Logo from './../../components/Logo/Logo';
-
+import CheckIcon from '@mui/icons-material/Check';
+import { useNavigate } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+import {Tooltip} from '@mui/material';
 import './GlobalCssDrawer.css';
 
-
-const drawerWidth = 240;
+const drawerWidth = 230;
 
 const openedMixin = (theme) => ({
   width: drawerWidth,
@@ -101,27 +103,94 @@ const Drawer = styled(MuiDrawer, {
 export default function MiniDrawer({ children }) {
   const [projectName, setProjectName] = useState('');
   const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [newProjectName, setNewProjectName] = useState('');
 
-  const theme = useTheme();
+  const ref = useRef(null);
+
+  const navigate = useNavigate();
 
   const { pathname } = useLocation();
   const { id } = useParams();
-
   const { appState, dispatch } = useGlobalContext();
-  
+
+  const theme = useTheme();
+
+  const addProject = (e) => {
+    if (!newProjectName) return;
+
+    if (e.type === 'click') {
+      const id = uuidv4();
+      dispatch({ type: 'ADD_PROJECT', payload: { name: newProjectName, id } });
+      navigate(`/tasks/${id}`);
+      setNewProjectName('');
+    } else if (e.type === 'keydown' && e.key === 'Enter') {
+      const id = uuidv4();
+      dispatch({ type: 'ADD_PROJECT', payload: { name: newProjectName, id } });
+      navigate(`/tasks/${id}`);
+      setNewProjectName('');
+    }
+  };
+
+  const handleChangeProjectName = (e) => {
+    if (!projectName) return;
+
+    if (e.type === 'click') {
+      dispatch({
+        type: 'CHANGE_PROJECT_NAME',
+        payload: { id, name: projectName },
+      });
+    } else if (e.type === 'keydown' && e.key === 'Enter') {
+      dispatch({
+        type: 'CHANGE_PROJECT_NAME',
+        payload: { id, name: projectName },
+      });
+    }
+  };
+
+  const handleNavigation = (path) => {
+    dispatch({
+      type: 'EDIT_PROJECT_NAME',
+      payload: { id: '' },
+    });
+
+    navigate(`/tasks/${path}`);
+  };
 
   useEffect(() => {
-    const project = appState.projectItems?.find((menuItem) => menuItem.id === id);
+    const project = appState.projectItems?.find(
+      (menuItem) => menuItem.id === id
+    );
 
-    if (!project) return;
+    if (!project) {
+      setProjectName('Home');
+      return;
+    }
 
     setProjectName(project.name);
   }, [id, appState]);
 
+  useEffect(() => {
+    const checkIfClickedOutside = (e) => {
+      if (newProjectName && ref.current && !ref.current.contains(e.target)) {
+        setNewProjectName('');
+      }
+    };
+
+    document.addEventListener('mousedown', checkIfClickedOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', checkIfClickedOutside);
+    };
+  }, [newProjectName]);
+
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' }} ref={ref}>
       <CssBaseline />
-      <AppBar position='fixed' open={isMenuOpen} sx={{ backgroundColor: '#2c2c38' }}>
+      <AppBar
+        position='fixed'
+        open={isMenuOpen}
+        sx={{ backgroundColor: '#2c2c38' }}
+      >
         <Toolbar>
           <IconButton
             color='inherit'
@@ -139,22 +208,50 @@ export default function MiniDrawer({ children }) {
             sx={{
               display: 'flex',
               justifyContent: 'space-between',
+              alignItems: 'center',
               width: '100%',
             }}
           >
-            <Typography
-              variant='h6'
-              noWrap
-              component='div'
-              sx={{ textTransform: 'capitalize' }}
-            >
-              {projectName}
-            </Typography>
-            {pathname !== '/' && (
-              <Button size='small' variant='contained' sx={{ textTransform: 'capitalize' }}>
-                <AddIcon sx={{fontSize:16}} /> Add New Task
-              </Button>
+            {appState.projectToEditId === id ? (
+              <Box>
+                <TextField
+                  id='standard-basic'
+                  label=''
+                  variant='standard'
+                  inputProps={{
+                    style: {
+                      borderBottom: '1px solid #fff',
+                      color: '#fff',
+                      
+                    },
+                  }}
+                  size='small'
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  onKeyDown={handleChangeProjectName}
+                />
+                <IconButton onClick={handleChangeProjectName}>
+                  <CheckIcon color='success' />
+                </IconButton>
+              </Box>
+            ) : (
+              <Typography
+                variant='h6'
+                noWrap
+                component='h2'
+                
+              >
+                {projectName}
+              </Typography>
             )}
+
+            <Box>
+              {pathname !== '/' && (
+                <>
+                  <AddNewTaskBtn /> <TopbarMenu projectId={id} />
+                </>
+              )}
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
@@ -177,12 +274,23 @@ export default function MiniDrawer({ children }) {
               justifyContent: 'space-between',
             }}
           >
-            <Box sx={{ paddingLeft: 2, display: 'flex', alignItems: 'center' }}>
+            <Link
+              component={RouterLink}
+              to='/'
+              sx={{
+                textDecoration: 'none',
+                color: '#fff',
+                textTransform: 'capitalize',
+                paddingLeft: 2,
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
               <Logo />
               <Typography variant='h6' noWrap component='div'>
-                YourKan
+                YouKan
               </Typography>
-            </Box>
+            </Link>
             <IconButton onClick={() => setIsMenuOpen((prev) => !prev)}>
               {theme.direction === 'rtl' ? (
                 <ChevronRightIcon style={{ color: '#fff' }} />
@@ -193,21 +301,22 @@ export default function MiniDrawer({ children }) {
           </Box>
         </DrawerHeader>
         <Divider />
-        {isMenuOpen && <Typography color="secondary"  variant='subtitle2' sx={{px: 2.5, pt:1.4 }}>All Items ({appState.projectItems.length}) </Typography>
-}
+        {isMenuOpen && (
+          <Typography
+            color='secondary'
+            variant='subtitle2'
+            sx={{ px: 2.5, pt: 1.4 }}
+          >
+            All Projects ({appState.projectItems.length})
+          </Typography>
+        )}
         <List>
           {appState.projectItems.map(({ name, id }) => (
-            <Link
-              key={id}
-              component={RouterLink}
-              to={`tasks/${id}`}
-              sx={{
-                textDecoration: 'none',
-                color: '#fff',
-                textTransform: 'capitalize',
-              }}
-            >
-              <ListItem disablePadding sx={{ display: 'block' }}>
+            <Tooltip  title={isMenuOpen? '' : name} placement="right">
+              <ListItem
+                disablePadding
+                sx={{ display: 'block',  }}
+              >
                 <ListItemButton
                   sx={{
                     minHeight: 48,
@@ -215,51 +324,59 @@ export default function MiniDrawer({ children }) {
                     px: 2.5,
                   }}
                   selected={pathname.includes(id)}
+                  onClick={() => handleNavigation(id)}
                 >
                   <ListItemIcon
                     sx={{
                       minWidth: 0,
-                      mr: isMenuOpen ? 3 : 'auto',
+                      mr: isMenuOpen ? 2 : 'auto',
                       justifyContent: 'center',
                     }}
                   >
-                    <AccountTreeIcon
-                      sx={{ color: '#fff', fontSize: '18px' }}
-                    />
+                    <AccountTreeIcon sx={{ color: '#fff', fontSize: '18px' }} />
                   </ListItemIcon>
-                  <ListItemText primary={name} sx={{ opacity: isMenuOpen ? 1 : 0 }} />
+                  <ListItemText
+                    primary={name}
+                    sx={{ opacity: isMenuOpen ? 1 : 0 }}
+                  />
                 </ListItemButton>
               </ListItem>
-            </Link>
+            </Tooltip>
           ))}
 
-              <ListItem disablePadding sx={{ display: 'block' }}>
-                <ListItemButton
-                  sx={{
-                    minHeight: 48,
-                    justifyContent: isMenuOpen ? 'initial' : 'center',
-                    px: 2.5,
-                  }}
-                  onClick={()=> dispatch({type:'OPEN_ADD_PROJECT'})}
-                >
-                  <ListItemIcon
-                    sx={{
-                      minWidth: 0,
-                      mr: isMenuOpen ? 3 : 'auto',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <AddIcon
-                      style={{ color: '#645fc6 ', fontSize: '18px' }}
-                    />
-                  </ListItemIcon>
-                  {isMenuOpen && <Typography variant='subtitle2' color='primary'>Create New Item</Typography>}
-                </ListItemButton>
-              </ListItem>
-
-
+          <ListItem disablePadding sx={{ display: 'block' }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: isMenuOpen ? 'initial' : 'center',
+                px: 2.5,
+              }}
+              onClick={() => setIsMenuOpen(true)}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: isMenuOpen ? 1 : 'auto',
+                  justifyContent: 'center',
+                }}
+                onClick={addProject}
+              >
+                <AddIcon sx={{ color: '#fff' }} />
+              </ListItemIcon>
+              {isMenuOpen && (
+                <TextField
+                  id='standard-basic'
+                  variant='standard'
+                  inputProps={{ style: { borderBottom: '1px solid #fff' } }}
+                  onChange={(e) => setNewProjectName(e.target.value)}
+                  value={newProjectName}
+                  onKeyDown={addProject}
+                />
+              )}
+            </ListItemButton>
+          </ListItem>
         </List>
-        <Divider />
+        {/* <Divider /> */}
       </Drawer>
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />

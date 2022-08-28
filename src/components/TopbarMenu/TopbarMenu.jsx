@@ -1,17 +1,13 @@
-import * as React from 'react';
-import IconButton from '@mui/material/IconButton';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Box } from '@mui/material';
-import {Typography} from '@mui/material';
+import { useState } from 'react';
+import { MoreVert } from '@mui/icons-material';
+import { IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import { useGlobalContext } from '../../store/context/AppContext';
 const ITEM_HEIGHT = 48;
 
-export default function CardButton({ projectId, contentId, colId }) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+const TopbarMenu = ({ projectId }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
   const { dispatch } = useGlobalContext();
@@ -19,24 +15,23 @@ export default function CardButton({ projectId, contentId, colId }) {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const handleDelete = () => {
+    dispatch({ type: 'OPEN_DELETE_PROJECT' });
     setAnchorEl(null);
-    dispatch({ type: 'DELETE_CARD', payload: { projectId, contentId, colId } });
+  };
+
+  const handleEdit = () => {
+    dispatch({ type: 'EDIT_PROJECT_NAME', payload: { id: projectId } });
+    setAnchorEl(null);
   };
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'end',
-        position: 'absolute',
-        right: 0,
-      }}
-    >
+    <>
       <IconButton
         aria-label='more'
         id='long-button'
@@ -46,7 +41,7 @@ export default function CardButton({ projectId, contentId, colId }) {
         onClick={handleClick}
         sx={{ color: '#fff' }}
       >
-        <MoreVertIcon />
+        <MoreVert />
       </IconButton>
       <Menu
         id='long-menu'
@@ -65,15 +60,16 @@ export default function CardButton({ projectId, contentId, colId }) {
         }}
       >
         <MenuItem
-          onClick={handleClose}
+          onClick={handleEdit}
           sx={{
             fontSize: 14,
             display: 'flex',
           }}
-
         >
-           <CreateIcon fontSize='2px' />
-          <Typography sx={{ml: 1}} variant='body2'>Edit</Typography>
+          <CreateIcon fontSize='2px' />
+          <Typography sx={{ ml: 1 }} variant='body2'>
+            Edit
+          </Typography>
         </MenuItem>
         <MenuItem
           onClick={handleDelete}
@@ -82,13 +78,14 @@ export default function CardButton({ projectId, contentId, colId }) {
             display: 'flex',
             justifyContent: 'space-between',
           }}
-          
         >
-           <DeleteIcon fontSize='2px' />
-           <Typography sx={{ml: 1}} variant='body2'>Delete</Typography>
-
+          <DeleteIcon fontSize='2px' />
+          <Typography sx={{ ml: 1 }} variant='body2'>
+            Delete
+          </Typography>
         </MenuItem>
       </Menu>
-    </Box>
+    </>
   );
-}
+};
+export default TopbarMenu;

@@ -1,11 +1,11 @@
 import MiniDrawer from '../../components/MiniDrawer/MiniDrawer';
 import { Outlet } from 'react-router-dom';
-import AddProjectModal from '../../components/AddProjectModal/AddProjectModal';
+import DeleteProjectModal from '../../components/DeleteProjectModal/DeleteProjectModal';
 
 const Home = () => {
   return (
     <MiniDrawer>
-      <AddProjectModal />
+      <DeleteProjectModal/>
       <Outlet />
     </MiniDrawer>
   );

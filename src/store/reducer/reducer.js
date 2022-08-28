@@ -4,16 +4,41 @@ const reducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case 'OPEN_ADD_PROJECT':
-      return { ...state, isOpenAddProject: true };
+    case 'OPEN_DELETE_PROJECT':
+      return { ...state, isOpenDeleteProject: true };
 
-    case 'CLOSE_ADD_PROJECT':
-      return { ...state, isOpenAddProject: false };
+    case 'CLOSE_DELETE_PROJECT':
+      return { ...state, isOpenDeleteProject: false };
+
+    case 'DELETE_PROJECT':
+      return {
+        ...state,
+        isOpenDeleteProject: payload.isOpenDeleteProject,
+        projectItems: state.projectItems.filter(
+          (project) => project.id !== payload.id
+        ),
+      };
+
+    case 'EDIT_PROJECT_NAME':
+      return { ...state, projectToEditId: payload.id };
+
+    case 'CHANGE_PROJECT_NAME':
+      return {
+        ...state,
+        projectToEditId: '',
+        projectItems: state.projectItems.map((projectItem) => {
+          if (projectItem.id === payload.id) {
+            return { ...projectItem, name: payload.name };
+          }
+
+          return projectItem;
+        }),
+      };
 
     case 'ADD_PROJECT':
       return {
         ...state,
-        isOpenAddProject: false,
+        
         projectItems: [
           ...state.projectItems,
           {

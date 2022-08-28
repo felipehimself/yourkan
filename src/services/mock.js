@@ -5,7 +5,7 @@ const mockState = {
   projectItems: [
     {
       id: uuidv4(),
-      name: 'aggrements',
+      name: 'agreements',
       columns: [
         {
           colName: 'todo',
@@ -98,7 +98,8 @@ const mockState = {
       ],
     },
   ],
-  isOpenAddProject: false,
+  isOpenDeleteProject: false,
+  projectToEditId: ''
 };
 
 export default mockState

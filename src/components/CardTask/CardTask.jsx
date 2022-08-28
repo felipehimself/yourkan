@@ -30,7 +30,7 @@ export default function CardTask({ content, colName, projectId, colId }) {
 
         <Typography
           variant='body2'
-          sx={{ textDecoration: colName === 'done' ? 'line-through' : 'none' }}
+          sx={{ textDecoration: colName === 'done' ? 'line-through' : 'none', color: colName === 'done' ? 'rgba(255,255,255,0.3)' : undefined }}
         >
           {content.desc}
         </Typography>

@@ -10,9 +10,9 @@ export default function CustomTheme({ children }) {
           background: {
             default: '#21212d',
           },
-          color: { default: '#fff' },
+
           primary: {
-            main: '#645fc6 '
+            main: '#645fc6 ',
           },
 
           secondary: {
