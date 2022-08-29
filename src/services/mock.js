@@ -98,8 +98,11 @@ const mockState = {
       ],
     },
   ],
+
   isOpenDeleteProject: false,
-  projectToEditId: ''
+  isOpenTaskModal: false,
+  taskToEdit: null,
+  projectToEditId: '',
 };
 
 export default mockState

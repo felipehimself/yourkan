@@ -6,7 +6,7 @@ import CardButton from '../CardButton/CardButton';
 import './GlobalCssCard.css';
 
 export default function CardTask({ content, colName, projectId, colId }) {
-  // console.log(projectId + '\n', colId + '\n', content.contentId + '\n')
+  
 
   return (
     <Card
@@ -14,8 +14,8 @@ export default function CardTask({ content, colName, projectId, colId }) {
     >
       <CardButton
         projectId={projectId}
-        contentId={content.contentId}
         colId={colId}
+        content={content}
       />
       <CardContent>
         <Typography

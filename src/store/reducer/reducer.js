@@ -10,6 +10,86 @@ const reducer = (state, action) => {
     case 'CLOSE_DELETE_PROJECT':
       return { ...state, isOpenDeleteProject: false };
 
+    case 'OPEN_TASK_MODAL':
+      return {
+        ...state,
+        isOpenTaskModal: true,
+      };
+
+    case 'CLOSE_TASK_MODAL':
+      return {
+        ...state,
+        isOpenTaskModal: false,
+        taskToEdit: null,
+      };
+
+    case 'ADD_NEW_TASK':
+      return {
+        ...state,
+        isOpenTaskModal: false,
+        projectItems: state.projectItems.map((project) => {
+          if (project.id === payload.id) {
+            return {
+              ...project,
+              columns: project.columns.map((col) => {
+                if (col.colName === 'todo') {
+                  return {
+                    ...col,
+                    colContent: [...col.colContent, payload.newTask],
+                  };
+                }
+
+                return col;
+              }),
+            };
+          }
+
+          return project;
+        }),
+      };
+
+    case 'EDIT_TASK':
+      return {
+        ...state,
+        taskToEdit: payload,
+        isOpenTaskModal: true,
+      };
+
+    case 'SAVE_EDIT_TASK':
+      return {
+        ...state,
+        isOpenTaskModal: false,
+        taskToEdit: null,
+        projectItems: state.projectItems.map((project) => {
+          if (project.id === payload.projectId) {
+            return {
+              ...project,
+              columns: project.columns.map((col) => {
+                if (col.colId === payload.colId) {
+                  return {
+                    ...col,
+                    colContent: col.colContent.map((content) => {
+                      if (content.contentId === payload.contentId)
+                        return {
+                          ...content,
+                          title: payload.title,
+                          desc: payload.desc,
+                        };
+
+                      return content;
+                    }),
+                  };
+                }
+
+                return col;
+              }),
+            };
+          }
+
+          return project;
+        }),
+      };
+
     case 'DELETE_PROJECT':
       return {
         ...state,
@@ -38,7 +118,7 @@ const reducer = (state, action) => {
     case 'ADD_PROJECT':
       return {
         ...state,
-        
+
         projectItems: [
           ...state.projectItems,
           {

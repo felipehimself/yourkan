@@ -4,28 +4,34 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { Box } from '@mui/material';
-import {Typography} from '@mui/material';
+import { Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CreateIcon from '@mui/icons-material/Create';
 import { useGlobalContext } from '../../store/context/AppContext';
 const ITEM_HEIGHT = 48;
 
-export default function CardButton({ projectId, contentId, colId }) {
+export default function CardButton({ content, projectId, colId }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-
+  
   const { dispatch } = useGlobalContext();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleDelete = () => {
     setAnchorEl(null);
-    dispatch({ type: 'DELETE_CARD', payload: { projectId, contentId, colId } });
+    dispatch({ type: 'DELETE_CARD', payload: { projectId, contentId:content.contentId, colId } });
+  };
+
+  const handleEdit = () => {
+    dispatch({
+      type: 'EDIT_TASK',
+      payload: { content, colId, projectId },
+    });
+
+    setAnchorEl(null);
   };
 
   return (
@@ -55,7 +61,7 @@ export default function CardButton({ projectId, contentId, colId }) {
         }}
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
+        onClose={() => setAnchorEl(null)}
         PaperProps={{
           style: {
             maxHeight: ITEM_HEIGHT * 4.5,
@@ -65,15 +71,16 @@ export default function CardButton({ projectId, contentId, colId }) {
         }}
       >
         <MenuItem
-          onClick={handleClose}
+          onClick={handleEdit}
           sx={{
             fontSize: 14,
             display: 'flex',
           }}
-
         >
-           <CreateIcon fontSize='2px' />
-          <Typography sx={{ml: 1}} variant='body2'>Edit</Typography>
+          <CreateIcon fontSize='2px' />
+          <Typography sx={{ ml: 1 }} variant='body2'>
+            Edit
+          </Typography>
         </MenuItem>
         <MenuItem
           onClick={handleDelete}
@@ -82,11 +89,11 @@ export default function CardButton({ projectId, contentId, colId }) {
             display: 'flex',
             justifyContent: 'space-between',
           }}
-          
         >
-           <DeleteIcon fontSize='2px' />
-           <Typography sx={{ml: 1}} variant='body2'>Delete</Typography>
-
+          <DeleteIcon fontSize='2px' />
+          <Typography sx={{ ml: 1 }} variant='body2'>
+            Delete
+          </Typography>
         </MenuItem>
       </Menu>
     </Box>

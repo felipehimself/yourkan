@@ -34,7 +34,7 @@ import { TextField } from '@mui/material';
 import './GlobalCssDrawer.css';
 const drawerWidth = 240;
 
-const DrawerNav = (props) => {
+const DrawerNav = React.memo((props) => {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -148,6 +148,7 @@ const DrawerNav = (props) => {
           <ListItemButton disabled>
             <ListItemText
               primary={`All Projects (${appState.projectItems.length})`}
+              sx={{fontSize:'1px'}}
             />
           </ListItemButton>
         </ListItem>
@@ -327,7 +328,7 @@ const DrawerNav = (props) => {
         {props.children}
       </Box>
     </Box>
-  );
-}
+  )
+})
 
 export default DrawerNav;

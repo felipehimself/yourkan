@@ -17,6 +17,8 @@ const DeleteProjectModal = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  
+
   const {
     appState: { isOpenDeleteProject, projectItems },
     dispatch,
@@ -33,11 +35,12 @@ const DeleteProjectModal = () => {
     });
     const changeToProject = projectItems[0].id;
     // navigate(`/tasks/${changeToProject}`);
-    navigate('/')
+    navigate('/');
   };
 
   return (
     <>
+    
       <Dialog
         open={isOpenDeleteProject}
         TransitionComponent={Transition}
