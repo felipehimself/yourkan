@@ -1,11 +1,11 @@
-import { Typography, Box } from '@mui/material';
+import { Typography, Box, Grid } from '@mui/material';
 import CardTask from '../CardTask/CardTask';
 import CircleIcon from '@mui/icons-material/Circle';
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
 const Column = ({ column, projectId }) => {
   return (
-    <Box sx={{ flex: '1 1',  }}>
+    <Grid item lg={4} md={12} sx={{width: '100%'}}>
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <CircleIcon fontSize='1px' color={column.color} />
         <Typography
@@ -24,7 +24,6 @@ const Column = ({ column, projectId }) => {
             {...droppableProvided.droppableProps}
           >
             {column.colContent.map((content, index) => {
-              
               return (
                 <Draggable
                   key={content.contentId}
@@ -43,6 +42,7 @@ const Column = ({ column, projectId }) => {
                         colName={column.colName}
                         content={content}
                         colId={column.colId}
+                        sx={{ width: '100%' }}
                       />
                     </div>
                   )}
@@ -53,7 +53,8 @@ const Column = ({ column, projectId }) => {
           </Box>
         )}
       </Droppable>
-    </Box>
+      
+    </Grid>
   );
 };
 export default Column;

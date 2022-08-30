@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import Column from '../../components/Column/Column';
 import { useGlobalContext } from '../../store/context/AppContext';
 import { DragDropContext } from 'react-beautiful-dnd';
+
+
 
 const Project = () => {
   const [project, setProject] = useState(null);
@@ -67,10 +69,37 @@ const Project = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <Box sx={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+      <Grid container spacing={4}>
         {project?.columns.map((column) => {
-          return <Column projectId={project.id} key={column.colId} column={column} />;
+          return (
+            <Column projectId={project.id} key={column.colId} column={column} />
+          );
         })}
+      </Grid>
+      <Box
+        sx={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, 50%)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+        }}
+      >
+        {/* {project?.columns.reduce(
+          (acc, curr) => acc + curr.colContent.length,
+          0
+        ) === 0 && (
+          <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={true}
+        onClose={handleClose}
+        message="Start Adding Tasks"
+        key={vertical + horizontal}
+      />
+        )} */}
+        
       </Box>
     </DragDropContext>
   );

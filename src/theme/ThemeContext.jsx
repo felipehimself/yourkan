@@ -1,7 +1,7 @@
 import React from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-export default function CustomTheme({ children }) {
+const CustomTheme = ({ children }) => {
 
   const theme = React.useMemo(
     () =>
@@ -35,3 +35,5 @@ export default function CustomTheme({ children }) {
       <ThemeProvider theme={theme}>{children}</ThemeProvider>
   );
 }
+
+export default CustomTheme
