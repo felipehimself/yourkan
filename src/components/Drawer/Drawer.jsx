@@ -309,6 +309,7 @@ const DrawerNav = React.memo((props) => {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              background: '#2c2c38',
             },
           }}
           open
