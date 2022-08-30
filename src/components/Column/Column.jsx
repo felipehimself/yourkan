@@ -42,6 +42,7 @@ const Column = ({ column, projectId }) => {
                         colName={column.colName}
                         content={content}
                         colId={column.colId}
+                        color={column.color}
                         sx={{ width: '100%' }}
                       />
                     </div>

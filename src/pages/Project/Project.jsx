@@ -18,7 +18,7 @@ const Project = () => {
 
   const onDragEnd = (result) => {
     const { destination, source } = result;
-
+    
     // drops in an unknown destination
     if (!destination) return;
 
@@ -54,6 +54,7 @@ const Project = () => {
       payload: {
         projectId: id,
         srcIndex: source.index,
+        destIndex: destination.index,
         sourceCol,
         destinationCol,
       },

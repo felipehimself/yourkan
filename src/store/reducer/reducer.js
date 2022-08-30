@@ -152,26 +152,18 @@ const reducer = (state, action) => {
       const { projectId, sourceCol, srcIndex, destIndex } = payload;
       const { projectItems } = state;
 
-      const newState = projectItems.map((projItem) => {
-        if (projItem.id === projectId) {
-          return {
-            ...projItem,
-            columns: projItem.columns.map((col) => {
-              if (col.colId === sourceCol) {
-                const newColContent = [...col.colContent];
-                const item = newColContent[srcIndex];
-                newColContent.splice(srcIndex, 1);
-                newColContent.splice(destIndex, 0, item);
+      const newState = [...projectItems]
 
-                return { ...col, colContent: [...newColContent] };
+      newState.forEach(projItem => {
+          if(projItem.id === projectId){
+            projItem.columns.forEach((col)=>{
+              if(col.colId === sourceCol){
+                const item = col.colContent[srcIndex];
+                col.colContent.splice(srcIndex, 1);
+                col.colContent.splice(destIndex, 0, item);
               }
-
-              return col;
-            }),
-          };
-        }
-
-        return projItem;
+            })
+          }
       });
 
       return { ...state, projectItems: [...newState] };
@@ -182,50 +174,33 @@ const reducer = (state, action) => {
         srcIndex: itemIndex,
         sourceCol: colId,
         destinationCol: destColId,
+        destIndex: destPos
       } = payload;
 
-      const allItems = state.projectItems;
+      const _newState = [...state.projectItems];
 
-      const itemToMove = allItems
+      const itemToMove = _newState
         .find((item) => item.id === projId)
         .columns.find((col) => col.colId === colId).colContent[itemIndex];
 
-      const withouItemToMove = allItems.map((item) => {
+      _newState.forEach((item) => {
         if (item.id === projId) {
-          return {
-            ...item,
-            columns: item.columns.map((col) => {
-              if (col.colId === colId) {
-                return {
-                  ...col,
-                  colContent: [
-                    ...col.colContent.filter((_, ind) => ind !== itemIndex),
-                  ],
-                };
-              }
-
-              return col;
-            }),
-          };
+          item.columns.forEach((col) => {
+            if (col.colId === colId) {
+              col.colContent.splice(itemIndex, 1);
+            }
+          });
         }
-
-        return item;
       });
 
-      const _newState = withouItemToMove.map((item) => {
+      _newState.forEach((item) => {
         if (item.id === projId) {
-          return {
-            ...item,
-            columns: item.columns.map((col) => {
-              if (col.colId === destColId) {
-                return { ...col, colContent: [...col.colContent, itemToMove] };
-              }
-              return col;
-            }),
-          };
+          item.columns.forEach((col) => {
+            if (col.colId === destColId) {
+              col.colContent.splice(destPos,0,itemToMove);
+            }
+          });
         }
-
-        return item;
       });
 
       return { ...state, projectItems: [..._newState] };

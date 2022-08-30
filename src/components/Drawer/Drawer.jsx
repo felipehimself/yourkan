@@ -24,6 +24,7 @@ import {
   useParams,
   useNavigate,
 } from 'react-router-dom';
+import {Tooltip} from '@mui/material'
 import Link from '@mui/material/Link';
 import AddNewTaskBtn from '../AddNewTaskBtn/AddNewTaskBtn';
 import TopbarMenu from '../TopbarMenu/TopbarMenu';
@@ -144,17 +145,20 @@ const DrawerNav = React.memo((props) => {
       </Toolbar>
       <Divider />
       <List>
-        <ListItem disablePadding sx={{pl:4}}>
+        <ListItem disablePadding sx={{ pl: 4 }}>
           <ListItemButton disabled>
             <ListItemText
               primary={`All Projects (${appState.projectItems.length})`}
-              sx={{fontSize:'1px'}}
+              sx={{ fontSize: '1px' }}
             />
           </ListItemButton>
         </ListItem>
         {appState?.projectItems.map(({ name, id }) => (
           <ListItem key={id} disablePadding>
-            <ListItemButton onClick={() => handleNavigation(id)} selected={pathname.includes(id)}>
+            <ListItemButton
+              onClick={() => handleNavigation(id)}
+              selected={pathname.includes(id)}
+            >
               <ListItemIcon
                 sx={{
                   minWidth: 0,
@@ -163,10 +167,12 @@ const DrawerNav = React.memo((props) => {
               >
                 <AccountTreeIcon sx={{ color: '#fff', fontSize: '18px' }} />
               </ListItemIcon>
-              <ListItemText
-                primary={name}
-                sx={{ textTransform: 'capitalize' }}
-              />
+              <Tooltip title={name.length > 15 ? name : ''} placement="right-end">
+                <ListItemText
+                  primary={name.length > 15 ? name.slice(0, 16) + '...' : name}
+                                    
+                />
+              </Tooltip>
             </ListItemButton>
           </ListItem>
         ))}
@@ -247,7 +253,7 @@ const DrawerNav = React.memo((props) => {
                     style: {
                       borderBottom: '1px solid #fff',
                       color: '#fff',
-                      textTransform: 'capitalize'
+                      textTransform: 'capitalize',
                     },
                   }}
                   size='small'
@@ -289,7 +295,7 @@ const DrawerNav = React.memo((props) => {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, 
+            keepMounted: true,
           }}
           sx={{
             display: { xs: 'block', sm: 'none' },
@@ -329,7 +335,7 @@ const DrawerNav = React.memo((props) => {
         {props.children}
       </Box>
     </Box>
-  )
-})
+  );
+});
 
 export default DrawerNav;

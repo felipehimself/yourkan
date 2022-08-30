@@ -5,7 +5,7 @@ const mockState = {
   projectItems: [
     {
       id: uuidv4(),
-      name: 'agreements',
+      name: 'Agreements',
       columns: [
         {
           colName: 'todo',
@@ -13,13 +13,13 @@ const mockState = {
           colId: uuidv4(),
           colContent: [
             {
-              title: 'change repository',
-              desc: "it's necessary to change the place",
+              title: 'law department review',
+              desc: "it's necessary to check all clauses",
               contentId: uuidv4(),
             },
             {
-              title: 'anything',
-              desc: "some dumb text",
+              title: 'meeting with the client',
+              desc: "it's necessary to schedule a meeting",
               contentId: uuidv4(),
             },
           ],
@@ -30,7 +30,7 @@ const mockState = {
           colId: uuidv4(),
           colContent: [
             {
-              title: 'change mentality',
+              title: 'drawing up a new draft',
               desc: "working on that",
               contentId: uuidv4(),
             },
@@ -42,8 +42,8 @@ const mockState = {
           colId: uuidv4(),
           colContent: [
             {
-              title: 'change repository',
-              desc: "it's necessary to change the place",
+              title: 'monthly conferece call',
+              desc: "scheduled to August 30, 2022",
               contentId: uuidv4(),
             },
           ],
@@ -52,7 +52,7 @@ const mockState = {
     },
     {
       id: uuidv4(),
-      name: 'flutter',
+      name: 'Monthly meeting',
       columns: [
         {
           colName: 'todo',
@@ -60,13 +60,13 @@ const mockState = {
           colId: uuidv4(),
           colContent: [
             {
-              title: 'change repository',
-              desc: "it's necessary to change the place",
+              title: 'breafing',
+              desc: "discuss main topics with the team",
               contentId: uuidv4(),
             },
             {
-              title: 'anything',
-              desc: "some dumb text",
+              title: 'next project addressing',
+              desc: "address to each one their next project",
               contentId: uuidv4(),
             },
           ],
@@ -77,8 +77,8 @@ const mockState = {
           colId: uuidv4(),
           colContent: [
             {
-              title: 'change repository',
-              desc: "it's necessary to change the place",
+              title: 'develop the presentation',
+              desc: "it's has being done",
               contentId: uuidv4(),
             },
           ],
@@ -89,8 +89,8 @@ const mockState = {
           colId: uuidv4(),
           colContent: [
             {
-              title: 'change repository',
-              desc: "it's necessary to change the place",
+              title: 'putting together all topics',
+              desc: "create a list with all topics to be discussed",
               contentId: uuidv4(),
             },
           ],

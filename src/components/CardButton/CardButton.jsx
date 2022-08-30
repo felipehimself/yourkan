@@ -10,7 +10,7 @@ import CreateIcon from '@mui/icons-material/Create';
 import { useGlobalContext } from '../../store/context/AppContext';
 const ITEM_HEIGHT = 48;
 
-export default function CardButton({ content, projectId, colId }) {
+const CardButton = ({ content, projectId, colId }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   
@@ -99,3 +99,5 @@ export default function CardButton({ content, projectId, colId }) {
     </Box>
   );
 }
+
+export default CardButton
