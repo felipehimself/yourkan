@@ -275,7 +275,7 @@ const DrawerNav = React.memo((props) => {
                 {projectName}
               </Typography>
             )}
-            {pathname !== '/' && (
+            {(pathname !== '/' && !appState.projectToEditId ) && (
               <Box>
                 <AddNewTaskBtn />
                 <TopbarMenu projectId={id} />

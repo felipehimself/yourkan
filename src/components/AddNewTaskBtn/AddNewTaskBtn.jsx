@@ -29,7 +29,7 @@ const AddNewTaskBtn = () => {
         onClick={handleOpenAddNewTask}
         size='large'
         startIcon={<Add sx={{ color: '#fff' }} />}
-        sx={{ display: { sm: 'none', xs: 'inline-flex' } }}
+        sx={{ display: { sm: 'none', xs: 'inline-flex' }, mr: { xs: '-12px' } }}
         variant='text'
       />
     </>
